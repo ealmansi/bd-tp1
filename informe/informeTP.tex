@@ -1,0 +1,46 @@
+\documentclass[spanish,11pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+%\usepackage{fancyhdr,lastpage}
+\usepackage[a4paper]{geometry}
+\usepackage{multicol} 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ulem}
+\usepackage{lscape}
+
+%%%PAQUETE PARA ESCRIBIR CODIGO%%%
+\usepackage{listings}
+
+%%%PAGE LAYOUT%%%rao
+%\topmargin = -0.5cm
+
+%\hoffset=-3.5cm
+%\textwidth=19cm
+%\parindent= 2 em
+%\parskip=3 pt
+%\footskip=1.2cm
+%\textheight = 680pt
+%\headheight 13.07225pt
+%\pagestyle{fancy}
+%\cfoot{\thepage\ de \pageref{LastPage}}
+
+%%%PAQUETES DE GRAFICO Y CALCULO%%%
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+
+\newcommand{\dashuline}{\bgroup \markoverwith{\lower .8ex\hbox{-}}\ULon}
+
+%%%CARATULA ESTANDAR (
+\usepackage{caratula} 
+\begin{document}
+\input{tituloEstandar}
+
+%%TITULO%%
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\input{contenido}
+\end{document}

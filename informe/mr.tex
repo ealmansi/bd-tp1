@@ -1,7 +1,84 @@
 \begin{description}
- \item[NombreTabla](\underline{pk},\dashuline{fk}, atr1, atr2, ..., atrN)\\
-PK=CK=\{(pk)\}\\
-FK=\{fk\}\\
+% \item[NombreTabla](\underline{pk},\dashuline{fk}, atr1, atr2, ..., atrN)\\
+%PK=CK=\{pk\}\\
+%FK=\{fk\}\\
+
+ %************* DER USUARIO *************%
+ \item[Usuario](\underline{idUsuario}, calle, numero, localidad, telefono, email)\\
+PK=CK=\{idUsuario\}\\
+FK=\{\}\\
+
+ \item[Particular](\underline{\dashuline{idUsuario}}, DNI, nombre, apellido)\\
+PK=\{idUsuario\}\\
+CK=\{idUsuario, DNI\}\\
+FK=\{idUsuario\}\\
+Particular.idUsuario debe estar en Usuario.idUsuario
+
+ \item[Empresa](\underline{\dashuline{idUsuario}}, CUIT, razonSocial, \dashuline{nombreCategoriaEmp})\\
+PK=\{idUsuario\}\\
+CK=\{idUsuario, CUIT\}\\
+FK=\{idUsuario, nombreCategoriaEmp\}\\
+Empresa.idUsuario debe estar en Usuario.idUsuario\\
+Empresa.nombreCategoriaEmp debe estar en CategoriaEmpresa.nombre
+
+ \item[CategoriaEmpresa](\underline{nombre}, \dashuline{nombreSubCategoria})\\
+PK=CK=\{(nombre)\}\\
+FK=\{nombreSubCategoria\}\\
+CategoriaEmpresa.nombreSubCategoria puede ser nulo o debe estar en CategoriaEmpresa.nombre\\
+CategoriaEmpresa.nombre puede no estar en CategoriaEmpresa.nombreSubCategoria
+
+ \item[SuscripcionRubiOriente](\underline{idSuscripcion}, periodo, \dashuline{idUsuario})\\
+PK=CK=\{idSuscripcion\}\\
+FK=\{idUsuario\}\\
+SuscripcionRubiOriente.idUsuario debe estar en Usuario.idUsuario\\
+Usuario.idUsuario puede no estar en SuscripcionRubiOriente.idUsuario
+
+ \item[Factura](\underline{idFactura}, periodo, monto, \dashuline{idUsuario})\\
+PK=CK=\{idFactura\}\\
+FK=\{idUsuario\}\\
+Factura.idUsuario debe estar en Usuario.idUsuario\\
+Usuario.idUsuario puede no estar en Factura.idUsuario
+
+ %************* DER PUBLICACION *************%
+ \item[Publicacion](\underline{idPublicacion}, título, fecha, precio, \dashuline{tipoPublicacion})\\
+PK=CK=\{idPublicacion\}\\
+FK=\{tipoPublicacion\}\\
+Publicacion.tipoPublicacion debe estar en TipoPublicacion.nombre\\
+TipoPublicacion.nombre puede no estar en Publicacion.tipoPublicacion
+
+ \item[TipoPublicacion](\underline{idPublicacion}, comision, costo, nivel, caducidad)\\
+PK=CK=\{nombre\}\\
+FK=\{\}\\
+
+ \item[Item](\underline{idItem})\\
+PK=CK=\{idItem\}\\
+FK=\{\}\\
+
+ \item[Producto](\underline{\dashuline{idItem}}, \dashuline{nombreCategoriaProd})\\
+PK=CK=\{idItem\}\\
+FK=\{idItem, nombreCategoriaProd\}\\
+Producto.idItem debe estar en Item.idItem\\
+Producto.nombreCategoriaProd debe estar en CategoriaProducto.nombre\\
+CategoriaProducto.nombre puede no estar en Producto.nombreCategoriaProd
+
+ \item[Servicio](\underline{\dashuline{idItem}}, precioXHora, \dashuline{nombreTipoServicio})\\
+PK=CK=\{idItem\}\\
+FK=\{idItem, nombreTipoServicio\}\\
+Servicio.idItem debe estar en Item.idItem\\
+Servicio.nombreTipoServicio debe estar en TipoServicio.nombre\\
+TipoServicio.nombre puede no estar en Servicio.nombreTipoServicio
+
+ \item[CategoriaProducto](\underline{nombre}, \dashuline{nombreSubCategoria})\\
+PK=CK=\{(nombre)\}\\
+FK=\{nombreSubCategoria\}\\
+CategoriaProducto.nombreSubCategoria puede ser nulo o debe estar en CategoriaProducto.nombre\\
+CategoriaProducto.nombre puede no estar en CategoriaProducto.nombreSubCategoria
+
+ \item[TipoServicio](\underline{nombre}, \dashuline{nombreSubTipo})\\
+PK=CK=\{(nombre)\}\\
+FK=\{nombreSubCategoria\}\\
+TipoServicio.nombreSubTipo puede ser nulo o debe estar en TipoServicio.nombre\\
+TipoServicio.nombre puede no estar en TipoServicio.nombreSubTipo
 
 \end{description}
 

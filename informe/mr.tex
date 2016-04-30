@@ -4,7 +4,7 @@
 %FK=\{fk\}\\
 
  %************* DER USUARIO *************%
- \item[Usuario](\underline{idUsuario}, calle, numero, localidad, telefono, email)\\
+ \item[Usuario](\underline{idUsuario}, calle, numero, localidad, telefono, email, tipo)\\
 PK=CK=\{idUsuario\}\\
 FK=\{\}\\
 
@@ -40,9 +40,9 @@ Factura.idUsuario debe estar en Usuario.idUsuario\\
 Usuario.idUsuario puede no estar en Factura.idUsuario
 
  %************* DER PUBLICACION *************%
- \item[Publicacion](\underline{idPublicacion}, título, fecha, precio, \dashuline{tipoPublicacion})\\
+ \item[Publicacion](\underline{idPublicacion}, título, fecha, precio, \dashuline{tipoPublicacion}, tipoVigencia, tipoVenta, \dashuline{idUsuarioPublicador})\\
 PK=CK=\{idPublicacion\}\\
-FK=\{tipoPublicacion\}\\
+FK=\{tipoPublicacion, idUsuarioPublicador\}\\
 Publicacion.tipoPublicacion debe estar en TipoPublicacion.nombre\\
 TipoPublicacion.nombre puede no estar en Publicacion.tipoPublicacion
 
@@ -50,9 +50,9 @@ TipoPublicacion.nombre puede no estar en Publicacion.tipoPublicacion
 PK=CK=\{nombre\}\\
 FK=\{\}\\
 
- \item[Item](\underline{idItem})\\
-PK=CK=\{idItem\}\\
-FK=\{\}\\
+ \item[Item](\underline{idItem}, \dashuline{idPublicacion}, tipo)\\
+PK=CK=\{idItem, \dashuline{idPublicacion}\}\\
+FK=\{idPublicacion\}\\
 
  \item[Producto](\underline{\dashuline{idItem}}, \dashuline{nombreCategoriaProd})\\
 PK=CK=\{idItem\}\\
@@ -68,17 +68,64 @@ Servicio.idItem debe estar en Item.idItem\\
 Servicio.nombreTipoServicio debe estar en TipoServicio.nombre\\
 TipoServicio.nombre puede no estar en Servicio.nombreTipoServicio
 
- \item[CategoriaProducto](\underline{nombre}, \dashuline{nombreSubCategoria})\\
+ \item[CategoriaProducto](\underline{nombre}, \dashuline{nombreSuperCategoria})\\
 PK=CK=\{(nombre)\}\\
-FK=\{nombreSubCategoria\}\\
-CategoriaProducto.nombreSubCategoria puede ser nulo o debe estar en CategoriaProducto.nombre\\
-CategoriaProducto.nombre puede no estar en CategoriaProducto.nombreSubCategoria
+FK=\{nombreSuperCategoria\}\\
+CategoriaProducto.nombreSuperCategoria puede ser nulo o debe estar en CategoriaProducto.nombre\\
+CategoriaProducto.nombre puede no estar en CategoriaProducto.nombreSuperCategoria
 
- \item[TipoServicio](\underline{nombre}, \dashuline{nombreSubTipo})\\
+ \item[TipoServicio](\underline{nombre}, \dashuline{nombreSuperTipo})\\
 PK=CK=\{(nombre)\}\\
-FK=\{nombreSubCategoria\}\\
+FK=\{nombreSuperTipo\}\\
 TipoServicio.nombreSubTipo puede ser nulo o debe estar en TipoServicio.nombre\\
 TipoServicio.nombre puede no estar en TipoServicio.nombreSubTipo
+
+
+ %************* DER COMPRA *************%
+ \item[Compra](\underline{idCompra}, \underline{idUsuario}, \underline{idPublicacion})\\
+PK=CK=\{idCompra\}\\
+FK=\{idUsuario, idPublicacion\}\\
+
+ \item[Pago](\underline{idPago}, monto, \dashuline{idCompra}, tipo)\\
+PK=CK=\{idPago\}\\
+FK=\{idCompra\}\\
+
+ \item[PagoTarjeta](\underline{\dashuline{idPago}}, númeroTarjeta, cuotas)\\
+PK=CK=\{idPago\}\\
+FK=\{idPago\}\\
+
+ \item[Calificacion](\underline{idCalificacion}, \dashuline{idCompra}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor)\\
+PK=CK=\{idCalificacion\}\\
+FK=\{idCompra\}\\
+Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null
+
+ \item[Retiro](\underline{idRetiro}, \dashuline{idCompra}, tipo)\\
+PK=CK=\{idRetiro\}\\
+FK=\{idCompra\}\\
+
+ \item[EnvioPostal](\underline{\dashuline{idRetiro}}, direccion)\\
+PK=CK=\{idRetiro\}\\
+FK=\{idRetiro\}\\
+
+
+ %************* DER CENTRAL *************%
+  \item[HizoOferta](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}}, \underline{fecha}, monto)\\
+PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
+FK=\{idUsuario, idPublicacion\}\\
+
+% ESTO ES RARO, LA CC ES EL IDPREGUNTA, OSEALAS FOREIGN KEY DEJAN DE IMPORTAR PARA LAS CLAVES CANDIDATAS
+% TAL VEZ SEA UNA ENTIDAD, NO UNA RELACION 
+  \item[DejoPregunta](\underline{idPregunta}, \dashuline{idUsuario}, \dashuline{idPublicacion}, pregunta, respuesta)\\
+PK=CK=\{idPregunta\}\\
+FK=\{idUsuario, idPublicacion\}\\
+
+  \item[MarcoFavorita](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}})\\
+PK=CK=\{(idUsuario, idPublicacion)\}\\
+FK=\{idUsuario, idPublicacion\}\\
+
+  \item[Visito](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}}, \underline{fecha})\\
+PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
+FK=\{idUsuario, idPublicacion\}\\
 
 \end{description}
 

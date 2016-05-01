@@ -78,14 +78,65 @@ CREATE TABLE calificacion (
 	calificacionVendedor INTEGER NOT NULL
 );
 
+CREATE TABLE retiro (
+	idRetiro INTEGER NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE envioPostal (
+	direccion TEXT NOT NULL,
+
+	idRetiro INTEGER NOT NULL PRIMARY KEY,
+	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
+);
+
+CREATE TABLE retiroPersonal (
+	idRetiro INTEGER NOT NULL PRIMARY KEY,
+	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
+);
+
 CREATE TABLE compra (
 	idCompra INTEGER NOT NULL PRIMARY KEY,
 	fecha DATE NOT NULL,
 
 	idPago INTEGER NOT NULL,
 	idCalificacion INTEGER NOT NULL,
-	-- idPublicacion INTEGER NOT NULL
+	idPublicacion INTEGER NOT NULL,
 	FOREIGN KEY(idPago) REFERENCES pago(idPago),
 	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion)
-	-- FOREIGN KEY(idPublicacion) REFERENCSE publicacion(idPublicacion)
+	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
+);
+
+CREATE TABLE item (
+	idItem INTEGER NOT NULL PRIMARY KEY,
+
+	idPublicacion INTEGER NOT NULL
+	-- FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
+);
+
+CREATE TABLE producto (
+	idItem INTEGER NOT NULL PRIMARY KEY,
+	nombreCategoria TEXT NOT NULL,
+
+	FOREIGN KEY(idItem) REFERENCES item(idItem),
+	FOREIGN KEY(nombreCategoria) REFERENCES categoriaProducto(nombreCategoria)
+);
+
+CREATE TABLE categoriaProducto (
+	nombreCategoria TEXT NOT NULL PRIMARY KEY,
+	nombreCategoriaPadre TEXT,
+	FOREIGN KEY(nombreCategoriaPadre) REFERENCES categoriaProducto(nombreCategoriaPadre)
+);
+
+CREATE TABLE servicio (
+	precioPorHora INTEGER NOT NULL,
+
+	idItem INTEGER NOT NULL PRIMARY KEY,
+	FOREIGN KEY(idItem) REFERENCES item(idItem)
+);
+
+CREATE TABLE tipoServicio (
+	nombre TEXT NOT NULL PRIMARY KEY,
+
+	nombreTipoPadre TEXT,
+	FOREIGN KEY(nombreTipoPadre) REFERENCES tipoServicio(nombreTipoPadre)
 );

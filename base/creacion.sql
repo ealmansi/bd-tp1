@@ -14,7 +14,8 @@ CREATE TABLE usuario (
 CREATE TABLE domicilio (
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
 	numero INTEGER NOT NULL,
-	localidad TEXT NOT NULL
+	localidad TEXT NOT NULL,
+	calle TEXT NOT NULL
 );
 
 CREATE TABLE empresa (
@@ -22,10 +23,20 @@ CREATE TABLE empresa (
 	razonSocial TEXT NOT NULL,
 
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
-	FOREIGN KEY(idUsuario) REFERENCES domicilio(idUsuario)
+	idCategoriaEmpresa INTEGER NOT NULL,
+	FOREIGN KEY(idUsuario) REFERENCES domicilio(idUsuario),
+	FOREIGN KEY(idCategoriaEmpresa) REFERENCES categoriaEmpresa(idCategoriaEmpresa)
 );
 
-CREATE TABLE persona (
+CREATE TABLE categoriaEmpresa (
+	idCatetoriaEmpresa INTEGER NOT NULL PRIMARY KEY,
+	nombre TEXT NOT NULL,
+
+	idCategoriaPadre INTEGER,
+	FOREIGN KEY(idCategoriaPadre) REFERENCES categoriaEmpresa(idCategoriaPadre)
+);
+
+CREATE TABLE particular (
 	nombre TEXT NOT NULL,
 	apellido TEXT NOT NULL,
 	DNI TEXT NOT NULL,
@@ -34,31 +45,30 @@ CREATE TABLE persona (
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
 
-CREATE TABLE categoriaEmpresa (
-	idCatetoriaEmpresa INTEGER NOT NULL PRIMARY KEY,
-	nombre TEXT NOT NULL,
-
-	idUsuario INTEGER NOT NULL,
-	idCategoriaPadre INTEGER,
-	FOREIGN KEY(idUsuario) REFERENCES empresa(idUsuario),
-	FOREIGN KEY(idCategoriaPadre) REFERENCES categoriaEmpresa(idCategoriaPadre)
-);
-
 CREATE TABLE factura (
 	idFactura INTEGER NOT NULL PRIMARY KEY,
+	periodo DATE NOT NULL,
 	deuda INTEGER NOT NULL,
 
 	idUsuario INTEGER NOT NULL,
-	mesFactura INTEGER NOT NULL,
+	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
+);
+
+CREATE TABLE subscripcion (
+	idSubscripcion INTEGER NOT NULL PRIMARY KEY,
+	periodo DATE NOT NULL,
+
+	idUsuario INTEGER NOT NULL,
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
 
 CREATE TABLE pago (
-	idPago INTEGER NOT NULL PRIMARY KEY
+	idPago INTEGER NOT NULL PRIMARY KEY,
+	mongo INTEGER NOT NULL
 );
 
 CREATE TABLE pagoTarjeta (
-	numero INTEGER NOT NULL,
+	numeroTarjeta INTEGER NOT NULL,
 	cuotas INTEGER NOT NULL,
 
 	idPago INTEGER NOT NULL PRIMARY KEY,
@@ -78,6 +88,22 @@ CREATE TABLE calificacion (
 	calificacionVendedor INTEGER NOT NULL
 );
 
+CREATE TABLE compra (
+	idCompra INTEGER NOT NULL PRIMARY KEY,
+	fecha DATE NOT NULL,
+
+	idUsuario INTEGER NOT NULL,
+	idPago INTEGER NOT NULL,
+	idCalificacion INTEGER NOT NULL,
+	idPublicacionFinalizada INTEGER NOT NULL,
+	idRetiro INTEGER NOT NULL,
+	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
+	FOREIGN KEY(idPago) REFERENCES pago(idPago),
+	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion),
+	FOREIGN KEY(idPublicacionFinalizada) REFERENCES publicacionFinalizada(idPublicacion),
+	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
+);
+
 CREATE TABLE retiro (
 	idRetiro INTEGER NOT NULL PRIMARY KEY
 );
@@ -94,19 +120,6 @@ CREATE TABLE retiroPersonal (
 	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
 );
 
-CREATE TABLE compra (
-	idCompra INTEGER NOT NULL PRIMARY KEY,
-	fecha DATE NOT NULL,
-
-	idUsuario INTEGER NOT NULL,
-	idPago INTEGER NOT NULL,
-	idCalificacion INTEGER NOT NULL,
-	idPublicacionFinalizada INTEGER NOT NULL,
-	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
-	FOREIGN KEY(idPago) REFERENCES pago(idPago),
-	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion),
-	FOREIGN KEY(idPublicacionFinalizada) REFERENCES publicacionFinalizada(idPublicacion)
-);
 
 CREATE TABLE item (
 	idItem INTEGER NOT NULL PRIMARY KEY,
@@ -146,6 +159,8 @@ CREATE TABLE tipoServicio (
 CREATE TABLE publicacion (
 	idPublicacion INTEGER NOT NULL PRIMARY KEY,
 	titulo TEXT NOT NULL,
+	fecha DATE NOT NULL,
+	precio INTEGER NOT NULL,
 
 	idTipo INTEGER NOT NULL,
 	idUsuario INTEGER NOT NULL,
@@ -162,6 +177,8 @@ CREATE TABLE favoritoUsuarioPublicacion (
 );
 
 CREATE TABLE visitaUsuarioPublicacion (
+	fecha DATE NOT NULL,
+
 	idUsuario INTEGER NOT NULL,
 	idPublicacion INTEGER NOT NULL,
 	PRIMARY KEY(idUsuario, idPublicacion),

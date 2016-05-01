@@ -3,7 +3,7 @@
 .headers ON
 .mode column
 
-PRAGMA foreign_keys = ON
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE usuario (
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
@@ -50,11 +50,11 @@ CREATE TABLE factura (
 
 	idUsuario INTEGER NOT NULL,
 	mesFactura INTEGER NOT NULL,
-	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
+	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
 
 CREATE TABLE pago (
-	idPago INTEGER NOT NULL PRIMARY KEY,
+	idPago INTEGER NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE pagoTarjeta (
@@ -80,12 +80,12 @@ CREATE TABLE calificacion (
 
 CREATE TABLE compra (
 	idCompra INTEGER NOT NULL PRIMARY KEY,
-	fecha DATE NOT UNLL,
+	fecha DATE NOT NULL,
 
 	idPago INTEGER NOT NULL,
 	idCalificacion INTEGER NOT NULL,
 	-- idPublicacion INTEGER NOT NULL
 	FOREIGN KEY(idPago) REFERENCES pago(idPago),
-	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion),
+	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion)
 	-- FOREIGN KEY(idPublicacion) REFERENCSE publicacion(idPublicacion)
 );

@@ -83,7 +83,6 @@ CREATE TABLE calificacion (
 
 CREATE TABLE compra (
 	idCompra INTEGER NOT NULL PRIMARY KEY,
-	fecha DATE NOT NULL,
 
 	idUsuario INTEGER NOT NULL,
 	idPago INTEGER NOT NULL,

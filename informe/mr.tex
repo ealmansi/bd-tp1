@@ -82,50 +82,63 @@ TipoServicio.nombre puede no estar en TipoServicio.nombreSubTipo
 
 
  %************* DER COMPRA *************%
- \item[Compra](\underline{idCompra}, \underline{idUsuario}, \underline{idPublicacion})\\
+ \item[Compra](\underline{idCompra}, \underline{idUsuario}, \underline{idPublicacion}, \dashuline{idPago}, \dashuline{idCalificacion}, \dashuline{idRetiro})\\
 PK=CK=\{idCompra\}\\
-FK=\{idUsuario, idPublicacion\}\\
+FK=\{idUsuario, idPublicacion, idPago, idCalificacion, idRetiro\}\\
+Compra.idUsuario debe estar en Usuario.idUsuario \\
+Compra.idPublicacion debe estar en Publicacion.idPublicacion
 
- \item[Pago](\underline{idPago}, monto, \dashuline{idCompra}, tipo)\\
+ \item[Pago](\underline{idPago}, monto, tipo)\\
 PK=CK=\{idPago\}\\
-FK=\{idCompra\}\\
+FK=\{\}\\
 
  \item[PagoTarjeta](\underline{\dashuline{idPago}}, númeroTarjeta, cuotas)\\
 PK=CK=\{idPago\}\\
 FK=\{idPago\}\\
+PagoTarjeta.idPago debe estar en Pago.idPago
 
- \item[Calificacion](\underline{idCalificacion}, \dashuline{idCompra}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor)\\
+ \item[Calificacion](\underline{idCalificacion}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor)\\
 PK=CK=\{idCalificacion\}\\
 FK=\{idCompra\}\\
-Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null
+Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null\\
+Calificacion.idCompra debe estar en Compra.idCompra
 
- \item[Retiro](\underline{idRetiro}, \dashuline{idCompra}, tipo)\\
+ \item[Retiro](\underline{idRetiro}, tipo)\\
 PK=CK=\{idRetiro\}\\
 FK=\{idCompra\}\\
+Retiro.idCompra debe estar en Compra.idCompra
 
  \item[EnvioPostal](\underline{\dashuline{idRetiro}}, direccion)\\
 PK=CK=\{idRetiro\}\\
 FK=\{idRetiro\}\\
-
+EnvioPostal.idRetiro debe estar en Retiro.idRetiro
 
  %************* DER CENTRAL *************%
   \item[HizoOferta](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}}, \underline{fecha}, monto)\\
 PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
 FK=\{idUsuario, idPublicacion\}\\
+HizoOferta.idUsuario debe estar en Usuario.idUsuario\\
+HizoOferta.idPublicacion debe estar en Publicacion.idPublicacion\\
 
 % ESTO ES RARO, LA CC ES EL IDPREGUNTA, OSEALAS FOREIGN KEY DEJAN DE IMPORTAR PARA LAS CLAVES CANDIDATAS
 % TAL VEZ SEA UNA ENTIDAD, NO UNA RELACION 
   \item[DejoPregunta](\underline{idPregunta}, \dashuline{idUsuario}, \dashuline{idPublicacion}, pregunta, respuesta)\\
 PK=CK=\{idPregunta\}\\
 FK=\{idUsuario, idPublicacion\}\\
+DejoPregunta.idUsuario debe estar en Usuario.idUsuario\\
+DejoPregunta.idPublicacion debe estar en Publicacion.idPublicacion\\
 
   \item[MarcoFavorita](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}})\\
 PK=CK=\{(idUsuario, idPublicacion)\}\\
 FK=\{idUsuario, idPublicacion\}\\
+MarcoFavorita.idUsuario debe estar en Usuario.idUsuario\\
+MarcoFavorita.idPublicacion debe estar en Publicacion.idPublicacion\\
 
   \item[Visito](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}}, \underline{fecha})\\
 PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
 FK=\{idUsuario, idPublicacion\}\\
+Visito.idUsuario debe estar en Usuario.idUsuario\\
+Visito.idPublicacion debe estar en Publicacion.idPublicacion\\
 
 \end{description}
 

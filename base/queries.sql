@@ -17,3 +17,5 @@ FROM publicacion
 INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
 INNER JOIN particular ON particular.idUsuario = publicacion.idUsuario
 WHERE particular.nombre = 'Miguel' AND particular.apellido = 'Maurizio';
+
+

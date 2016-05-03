@@ -18,7 +18,6 @@ CREATE TABLE usuario (
 CREATE TABLE empresa (
 	CUIT TEXT NOT NULL,
 	razonSocial TEXT NOT NULL,
-
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
 	idCategoriaEmpresa INTEGER NOT NULL,
 	FOREIGN KEY(idUsuario) REFERENCES domicilio(idUsuario),
@@ -28,7 +27,6 @@ CREATE TABLE empresa (
 CREATE TABLE categoriaEmpresa (
 	idCategoriaEmpresa INTEGER NOT NULL PRIMARY KEY,
 	nombre TEXT NOT NULL,
-
 	idCategoriaPadre INTEGER,
 	FOREIGN KEY(idCategoriaPadre) REFERENCES categoriaEmpresa(idCategoriaEmpresa)
 );
@@ -37,7 +35,6 @@ CREATE TABLE particular (
 	nombre TEXT NOT NULL,
 	apellido TEXT NOT NULL,
 	DNI INTEGER NOT NULL,
-
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
@@ -46,7 +43,6 @@ CREATE TABLE factura (
 	idFactura INTEGER NOT NULL PRIMARY KEY,
 	periodo DATE NOT NULL,
 	deuda INTEGER NOT NULL,
-
 	idUsuario INTEGER NOT NULL,
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
@@ -54,7 +50,6 @@ CREATE TABLE factura (
 CREATE TABLE subscripcion (
 	idSubscripcion INTEGER NOT NULL PRIMARY KEY,
 	periodo DATE NOT NULL,
-
 	idUsuario INTEGER NOT NULL,
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
@@ -68,7 +63,6 @@ CREATE TABLE pago (
 CREATE TABLE pagoTarjeta (
 	numeroTarjeta INTEGER NOT NULL,
 	cuotas INTEGER NOT NULL,
-
 	idPago INTEGER NOT NULL PRIMARY KEY,
 	FOREIGN KEY(idPago) REFERENCES pago(idPago)
 );
@@ -83,7 +77,6 @@ CREATE TABLE calificacion (
 
 CREATE TABLE compra (
 	idCompra INTEGER NOT NULL PRIMARY KEY,
-
 	idUsuario INTEGER NOT NULL,
 	idPago INTEGER NOT NULL,
 	idCalificacion INTEGER NOT NULL,
@@ -103,7 +96,6 @@ CREATE TABLE retiro (
 
 CREATE TABLE envioPostal (
 	direccion TEXT NOT NULL,
-
 	idRetiro INTEGER NOT NULL PRIMARY KEY,
 	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
 );
@@ -111,7 +103,6 @@ CREATE TABLE envioPostal (
 CREATE TABLE item (
 	idItem INTEGER NOT NULL PRIMARY KEY,
 	tipo INTEGER NOT NULL,
-
 	idPublicacion INTEGER NOT NULL,
 	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
 );
@@ -119,7 +110,6 @@ CREATE TABLE item (
 CREATE TABLE producto (
 	idItem INTEGER NOT NULL PRIMARY KEY,
 	nombreCategoria TEXT NOT NULL,
-
 	FOREIGN KEY(idItem) REFERENCES item(idItem),
 	FOREIGN KEY(nombreCategoria) REFERENCES categoriaProducto(nombreCategoria)
 );
@@ -132,14 +122,12 @@ CREATE TABLE categoriaProducto (
 
 CREATE TABLE servicio (
 	precioPorHora INTEGER NOT NULL,
-
 	idItem INTEGER NOT NULL PRIMARY KEY,
 	FOREIGN KEY(idItem) REFERENCES item(idItem)
 );
 
 CREATE TABLE tipoServicio (
 	nombre TEXT NOT NULL PRIMARY KEY,
-
 	nombreTipoPadre TEXT,
 	FOREIGN KEY(nombreTipoPadre) REFERENCES tipoServicio(nombreTipo)
 );
@@ -151,7 +139,6 @@ CREATE TABLE publicacion (
 	precio INTEGER NOT NULL,
 	tipoVenta INTEGER NOT NULL,
 	tipoVigencia INTEGER NOT NULL,
-
 	idTipo INTEGER NOT NULL,
 	idUsuario INTEGER NOT NULL,
 	FOREIGN KEY(idTipo) REFERENCES tipoPublicacion(idTipo),
@@ -177,7 +164,6 @@ CREATE TABLE favoritoUsuarioPublicacion (
 
 CREATE TABLE visitaUsuarioPublicacion (
 	fecha DATE NOT NULL,
-
 	idUsuario INTEGER NOT NULL,
 	idPublicacion INTEGER NOT NULL,
 	PRIMARY KEY(idUsuario, idPublicacion, fecha),
@@ -185,11 +171,10 @@ CREATE TABLE visitaUsuarioPublicacion (
 	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
 );
 
-CREATE TABLE preguntaUsuarioPublicacion (
+CREATE TABLE pregunta (
 	idPregunta INTEGER NOT NULL,
 	pregunta TEXT NOT NULL,
 	respuesta TEXT,
-
 	idUsuario INTEGER NOT NULL,
 	idPublicacion INTEGER NOT NULL,
 	PRIMARY KEY(idPregunta),
@@ -205,7 +190,6 @@ CREATE TABLE publicacionSubasta (
 CREATE TABLE ofertaUsuarioSubasta (
 	precio INTEGER NOT NULL,
 	fechaOferta DATE NOT NULL,
-
 	idUsuario INTEGER NOT NULL,
 	idSubasta INTEGER NOT NULL,
 	PRIMARY KEY(idUsuario, idSubasta, fechaOferta),

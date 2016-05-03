@@ -6,7 +6,7 @@
  %************* DER USUARIO *************%
  \item[Usuario](\underline{idUsuario}, calle, numero, localidad, telefono, email, tipo)\\
 PK=CK=\{idUsuario\}\\
-FK=\{\}\\
+FK=\{\}
 
  \item[Particular](\underline{\dashuline{idUsuario}}, DNI, nombre, apellido)\\
 PK=\{idUsuario\}\\
@@ -40,19 +40,19 @@ Factura.idUsuario debe estar en Usuario.idUsuario\\
 Usuario.idUsuario puede no estar en Factura.idUsuario
 
  %************* DER PUBLICACION *************%
- \item[Publicacion](\underline{idPublicacion}, título, fecha, precio, \dashuline{tipoPublicacion}, tipoVigencia, tipoVenta, \dashuline{idUsuarioPublicador})\\
+ \item[Publicacion](\underline{idPublicacion}, titulo, fecha, precio, \dashuline{tipoPublicacion}, tipoVigencia, tipoVenta, \dashuline{idUsuarioPublicador})\\
 PK=CK=\{idPublicacion\}\\
 FK=\{tipoPublicacion, idUsuarioPublicador\}\\
 Publicacion.tipoPublicacion debe estar en TipoPublicacion.nombre\\
 TipoPublicacion.nombre puede no estar en Publicacion.tipoPublicacion
 
- \item[TipoPublicacion](\underline{idPublicacion}, comision, costo, nivel, caducidad)\\
+ \item[TipoPublicacion](\underline{nombre}, comision, costo, nivel, caducidad)\\
 PK=CK=\{nombre\}\\
-FK=\{\}\\
+FK=\{\}
 
  \item[Item](\underline{idItem}, \dashuline{idPublicacion}, tipo)\\
 PK=CK=\{idItem, \dashuline{idPublicacion}\}\\
-FK=\{idPublicacion\}\\
+FK=\{idPublicacion\}
 
  \item[Producto](\underline{\dashuline{idItem}}, \dashuline{nombreCategoriaProd})\\
 PK=CK=\{idItem\}\\
@@ -69,41 +69,50 @@ Servicio.nombreTipoServicio debe estar en TipoServicio.nombre\\
 TipoServicio.nombre puede no estar en Servicio.nombreTipoServicio
 
  \item[CategoriaProducto](\underline{nombre}, \dashuline{nombreSuperCategoria})\\
-PK=CK=\{(nombre)\}\\
+PK=CK=\{nombre\}\\
 FK=\{nombreSuperCategoria\}\\
 CategoriaProducto.nombreSuperCategoria puede ser nulo o debe estar en CategoriaProducto.nombre\\
 CategoriaProducto.nombre puede no estar en CategoriaProducto.nombreSuperCategoria
 
  \item[TipoServicio](\underline{nombre}, \dashuline{nombreSuperTipo})\\
-PK=CK=\{(nombre)\}\\
+PK=CK=\{nombre\}\\
 FK=\{nombreSuperTipo\}\\
-TipoServicio.nombreSubTipo puede ser nulo o debe estar en TipoServicio.nombre\\
-TipoServicio.nombre puede no estar en TipoServicio.nombreSubTipo
+TipoServicio.nombreSuperTipo puede ser nulo o debe estar en TipoServicio.nombre\\
+TipoServicio.nombre puede no estar en TipoServicio.nombreSuperTipo
 
 
  %************* DER COMPRA *************%
- \item[Compra](\underline{idCompra}, \underline{idUsuario}, \underline{idPublicacion}, \dashuline{idPago}, \dashuline{idCalificacion}, \dashuline{idRetiro})\\
+ \item[Compra](\underline{idCompra}, \dashuline{idUsuario}, \dashuline{idPublicacion}, \dashuline{idPago}, \dashuline{idCalificacion}, \dashuline{idRetiro})\\
 PK=CK=\{idCompra\}\\
 FK=\{idUsuario, idPublicacion, idPago, idCalificacion, idRetiro\}\\
 Compra.idUsuario debe estar en Usuario.idUsuario \\
 Compra.idPublicacion debe estar en Publicacion.idPublicacion
+Compra.idPago debe estar en Pago.idPago \\
+Compra.idCalificacion debe estar en Calificacion.idCalificacion \\
+%Calificacion.idCalificacion puede no estar en Compra.idCalificacion \\
+Compra.idRetiro debe estar en Retiro.idRetiro 
 
  \item[Pago](\underline{idPago}, monto, tipo)\\
 PK=CK=\{idPago\}\\
-FK=\{\}\\
+FK=\{\}
 
- \item[PagoTarjeta](\underline{\dashuline{idPago}}, númeroTarjeta, cuotas)\\
+ \item[PagoTarjeta](\underline{\dashuline{idPago}}, numeroTarjeta, cuotas)\\
 PK=CK=\{idPago\}\\
 FK=\{idPago\}\\
 PagoTarjeta.idPago debe estar en Pago.idPago
 
- \item[Calificacion](\underline{idCalificacion}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor)\\
+%  \item[PagoEfectivo](\underline{\dashuline{idPago}})\\
+% PK=CK=\{idPago\}\\
+% FK=\{idPago\}\\
+% PagoEfectivo.idPago debe estar en Pago.idPago
+
+ \item[Calificacion](\underline{idCalificacion}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor, \dashuline{idCompra})\\
 PK=CK=\{idCalificacion\}\\
 FK=\{idCompra\}\\
-Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null\\
+%Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null\\
 Calificacion.idCompra debe estar en Compra.idCompra
 
- \item[Retiro](\underline{idRetiro}, tipo)\\
+ \item[Retiro](\underline{idRetiro}, tipo, \dashuline{idCompra})\\
 PK=CK=\{idRetiro\}\\
 FK=\{idCompra\}\\
 Retiro.idCompra debe estar en Compra.idCompra
@@ -118,27 +127,27 @@ EnvioPostal.idRetiro debe estar en Retiro.idRetiro
 PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
 FK=\{idUsuario, idPublicacion\}\\
 HizoOferta.idUsuario debe estar en Usuario.idUsuario\\
-HizoOferta.idPublicacion debe estar en Publicacion.idPublicacion\\
+HizoOferta.idPublicacion debe estar en Publicacion.idPublicacion
 
-% ESTO ES RARO, LA CC ES EL IDPREGUNTA, OSEALAS FOREIGN KEY DEJAN DE IMPORTAR PARA LAS CLAVES CANDIDATAS
-% TAL VEZ SEA UNA ENTIDAD, NO UNA RELACION 
-  \item[DejoPregunta](\underline{idPregunta}, \dashuline{idUsuario}, \dashuline{idPublicacion}, pregunta, respuesta)\\
+  \item[Pregunta](\underline{idPregunta}, \dashuline{idUsuario}, \dashuline{idPublicacion}, pregunta, respuesta)\\
 PK=CK=\{idPregunta\}\\
 FK=\{idUsuario, idPublicacion\}\\
-DejoPregunta.idUsuario debe estar en Usuario.idUsuario\\
-DejoPregunta.idPublicacion debe estar en Publicacion.idPublicacion\\
+Pregunta.idUsuario debe estar en Usuario.idUsuario\\
+Pregunta.idPublicacion debe estar en Publicacion.idPublicacion\\
+Usuario.idUsuario puede no estar en Pregunta.idUsuario\\
+Publicacion.idPublicacion puede no estar en Pregunta.idPublicacion
 
   \item[MarcoFavorita](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}})\\
 PK=CK=\{(idUsuario, idPublicacion)\}\\
 FK=\{idUsuario, idPublicacion\}\\
 MarcoFavorita.idUsuario debe estar en Usuario.idUsuario\\
-MarcoFavorita.idPublicacion debe estar en Publicacion.idPublicacion\\
+MarcoFavorita.idPublicacion debe estar en Publicacion.idPublicacion
 
   \item[Visito](\underline{\dashuline{idUsuario}}, \underline{\dashuline{idPublicacion}}, \underline{fecha})\\
 PK=CK=\{(idUsuario, idPublicacion, fecha)\}\\
 FK=\{idUsuario, idPublicacion\}\\
 Visito.idUsuario debe estar en Usuario.idUsuario\\
-Visito.idPublicacion debe estar en Publicacion.idPublicacion\\
+Visito.idPublicacion debe estar en Publicacion.idPublicacion
 
 \end{description}
 

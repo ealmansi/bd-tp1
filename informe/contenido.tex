@@ -1,5 +1,22 @@
 \section{Introducción}
+
+El presente trabajo describe en detalle el diseño y la implementación de un sistema de persistencia de datos presentado sobre un problema representativo -aunque simplificado- del mundo real.
+  
+La metodología de diseño utilizada fue la Metodología de Diseño Lógico para Bases de Datos Relacionales (LRDM - Logical Relational Design Methodology), la cual tiene como primer paso la desambiguación de los requerimientos planteados en el problema y la construcción consecuente del Modelo Entidad Relación para el escenario en cuestión. La forma de representación utilizada para dicho modelo conceptual fue el Diagrama Entidad Relación.
+
+En una etapa posterior, pasamos al diseño lógico de la solución transformando el conocimiento comprendido en el DER al modelo relacional, al partir del cual se procede a la implementación de la solución en un motor de base de datos relacional. En este caso, el motor elegido para la implementación concreta fue SQLite\footnote{https://www.sqlite.org/}. 
+
 \subsection{Descripción del Problema}
+
+El problema para el cual se desarrolló un sistema de persistencia de datos consiste en un Mercado Virtual de intención similar a las comunidades de compra y venta online como MercadoLibre u OLX.
+
+El sistema permite que sus usuarios publiquen artículos o servicios para ser comprados o contratados por otros usuarios. Los usuarios del sistema pueden ser particulares o empresas, teniendo iguales atribuciones y deberes a la hora de publicar, comprar o vender productos en el mercado. Los usuarios pueden ofrecer productos o servicios (o combinaciones de ambos) a un precio fijo o someter sus publicaciones a una subasta donde se establece un precio inicial y durante un tiempo los demás usuarios pueden realizar ofertas en valores crecientes.
+
+El mercado tiene una comisión por cada publicación realizada que deviene en una compra, pudiendo ser las publicaciones de  distintos tipos y con diferentes valores de comisión o extensión del período de vigencia de las mismas. Todas las publicaciones permiten adicionalmente que los usuarios que las visitan realicen preguntas al vendedor, quien puede responderlas. 
+
+Las compras y ventas realizadas en el sitio siempre llevan una calificación obligatoria por parte de tanto el vendedor como el comprador, con una valoración numérica de 1 (no recomendable) a 10 (muy recomendable) así como un comentario opcional para el otro usuario involucrado en la transacción.
+
+El sistema almacena adicionalmente el historial de compras de los usuarios, sus visitas a publicaciones, y aquellos productos o servicios que los usuarios hayan marcado como favoritos.
 
 \subsection{Funcionalidades a implementar}
 Las funcionalidades que se esperan implementadas (SQL/stored

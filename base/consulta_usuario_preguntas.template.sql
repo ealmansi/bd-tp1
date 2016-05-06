@@ -2,6 +2,6 @@
 -- preguntas que ha realizado, con las respectivas respuestas que haya recibido (sólo
 -- la pregunta, si aún no recibió respuesta).
 
-select p.pregunta, p.respuesta 
-from pregunta p
-where p.idUsuario = :idUsuario;
+SELECT p.pregunta, p.respuesta 
+FROM pregunta p
+WHERE p.idUsuario = :idUsuario;

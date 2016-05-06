@@ -21,11 +21,11 @@ FK=\{idUsuario, nombreCategoriaEmp\}\\
 Empresa.idUsuario debe estar en Usuario.idUsuario\\
 Empresa.nombreCategoriaEmp debe estar en CategoriaEmpresa.nombre
 
- \item[CategoriaEmpresa](\underline{nombre}, \dashuline{nombreSubCategoria})\\
+ \item[CategoriaEmpresa](\underline{nombre}, \dashuline{nombreSuperCategoria})\\
 PK=CK=\{nombre\}\\
-FK=\{nombreSubCategoria\}\\
-CategoriaEmpresa.nombreSubCategoria puede ser nulo o debe estar en CategoriaEmpresa.nombre\\
-CategoriaEmpresa.nombre puede no estar en CategoriaEmpresa.nombreSubCategoria
+FK=\{nombreSuperCategoria\}\\
+CategoriaEmpresa.nombreSuperCategoria puede ser nulo o debe estar en CategoriaEmpresa.nombre\\
+CategoriaEmpresa.nombre puede no estar en CategoriaEmpresa.nombreSuperCategoria
 
  \item[SuscripcionRubiOriente](\underline{idSuscripcion}, periodo, \dashuline{idUsuario})\\
 PK=CK=\{idSuscripcion\}\\

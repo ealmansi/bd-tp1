@@ -10,13 +10,10 @@ create:
 fill:
 	sqlite3 $(table) < llenado.sql
 
-run: create
-	for query in query*.sql; do \
-		sqlite3 $(table) < $$query; \
-	done
-
 query1 query2 query3 query4 query5:
-	sqlite3 $(table) $*
+	sqlite3 $(table) < $@.sql
+
+run: query1 query2 query4 query5
 
 clean:
 	rm -f $(table)

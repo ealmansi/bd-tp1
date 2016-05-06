@@ -16,7 +16,7 @@ INSERT INTO categoriaEmpresa VALUES("comidas", NULL);
 INSERT INTO categoriaEmpresa VALUES("electronica", NULL);
 INSERT INTO categoriaEmpresa VALUES("computacion", "electronica");
 
-INSERT INTO empresa VALUES(0, "20454545459", "Compumundo SA", "computacion");
+INSERT INTO empresa VALUES(2, "20454545459", "Compumundo SA", "computacion");
 
 INSERT INTO factura VALUES(0, '2016-04-01', 1000, 1);
 INSERT INTO factura VALUES(1, '2016-05-01', 3500, 1);

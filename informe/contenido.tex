@@ -118,6 +118,12 @@ El problema presenta diferentes restricciones que no se encuentran modeladas en 
 \section{Conclusiones}
 \label{sec:conclusiones}
 
+A lo largo de este trabajo, presentamos un problema inspirado en un escenario simplificado de la vida real y pasamos por las múltiples etapas de diseño de un sistema de persistencia para dicho escenario. Desde el modelado inicial del problema en el Modelo Entidad Relación, al correspondiente Modelo Relacional hasta el diseño físico y la implementación real eligiendo un motor de bases de datos SQL apropiado.
+
+De especial interés fue observar de qué forma impacta una buena representación inicial del problema por medio del Diagrama Entidad Relación, permitiendo un paso sencillo entre el modelo y el diseño físico, garantizando la correcta representación del escenario y la factibildad de responder las preguntas que surgen naturalmente en este escenario por medio del lenguaje de consultas SQL. Con un buen diseño inicial, el paso entre las distintas etapas de modelado a implementación es prácticamente automático, agregando de a poco mayor detalle hasta llegar a una especificación completa del sistema de persistencia.
+
+Por otro lado, quedó de manifiesto la gran versatilidad y expresividad del lenguaje de consultas SQL, permitiendo especificar resultados con una representación natural del problema, así como mantener la consistencia de la base de datos evitando llegar a estados inválidos por medio de la utilización de Triggers.
+
 \newpage
 \appendix
 \section{Creación de tablas} \label{App:AppendixA}

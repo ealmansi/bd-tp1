@@ -1,4 +1,5 @@
 \section{Introducción}
+\label{sec:introduccion}
 
 El presente trabajo describe en detalle el diseño y la implementación de un sistema de persistencia de datos presentado sobre un problema representativo -aunque simplificado- del mundo real.
   
@@ -10,7 +11,7 @@ En una etapa posterior, pasamos al diseño lógico de la solución transformando el
 
 El problema para el cual se desarrolló un sistema de persistencia de datos consiste en un Mercado Virtual de intención similar a las comunidades de compra y venta online como MercadoLibre u OLX.
 
-El sistema permite que sus usuarios publiquen artículos o servicios para ser comprados o contratados por otros usuarios. Los usuarios del sistema pueden ser particulares o empresas, teniendo iguales atribuciones y deberes a la hora de publicar, comprar o vender productos en el mercado. Los usuarios pueden ofrecer productos o servicios (o combinaciones de ambos) a un precio fijo o someter sus publicaciones a una subasta donde se establece un precio inicial y durante un tiempo los demás usuarios pueden realizar ofertas en valores crecientes.
+El sistema permite que sus usuarios publiquen artículos o servicios para ser comprados o contratados por otros usuarios. Los usuarios del sistema pueden ser particulares o empresas, teniendo iguales atribuciones y deberes a la hora de publicar, comprar o vender productos en el mercado. Los usuarios pueden ofrecer productos o servicios (o combinaciones de ambos) a un precio fijo o someter sus publicaciones a una subasta donde se establece un precio inicial y durante un tiempo determinado los demás usuarios pueden realizar ofertas con valores crecientes.
 
 El mercado tiene una comisión por cada publicación realizada que deviene en una compra, pudiendo ser las publicaciones de  distintos tipos y con diferentes valores de comisión o extensión del período de vigencia de las mismas. Todas las publicaciones permiten adicionalmente que los usuarios que las visitan realicen preguntas al vendedor, quien puede responderlas. 
 
@@ -19,42 +20,81 @@ Las compras y ventas realizadas en el sitio siempre llevan una calificación obli
 El sistema almacena adicionalmente el historial de compras de los usuarios, sus visitas a publicaciones, y aquellos productos o servicios que los usuarios hayan marcado como favoritos.
 
 \subsection{Funcionalidades a implementar}
-Las funcionalidades que se esperan implementadas (SQL/stored
-procedures/triggers) son:
+
+Como requerimientos adicionales a la persistencia, hay una serie de funcionalidades particulares que implementamos de forma tal de verificar el correcto funcionamiento de la base. Estas son: 
+
 \begin{itemize}
  \item Consulta por usuario: obtener, para un usuario específico, información sobre los artículos que ha
 comprado y vendido, los artículos que ha visitado con su fecha de visita, los artículos que tiene
 en su lista de favoritos, y las primeras 3 categorías de artículos que visitó con mayor frecuencia
 en el último año.
+
  \item Consulta por categoría de producto: obtener, dada una categoría de producto (``Computación'',
 ``Hogar, muebles y jardín'', etc), un listado de los vendedores que han publicado artículos de dicha
 categoría y la cantidad de ventas que efectuó cada uno de dichos vendedores.
+
  \item Función ``Ofertar'': debe permitir al usuario ofertar una suma en una subasta. Dicha suma debe
 ser superior en al menos 1 peso, a la oferta actual, e inferior al doble de la oferta actual.
+
  \item Consulta por usuario y preguntas: obtener para un usuario específico, la lista de preguntas que
 ha realizado, con las respectivas respuestas que haya recibido (sólo la pregunta, si aún no recibió
 respuesta).
+
  \item Consulta por keyword: obtener, para un cierto keyword (por ejemplo ``mesa''), la lista de publicaciones
 vigentes que tengan en el título, dicha keyword. El usuario debe poder restringir su
 búsqueda sólo a cierta categoría de artículos o servicios.
+ 
  \item Consulta por ganador/es anual de viaje a Khan El-Khalili: obtener, para un año específico, el ganador/es
 \end{itemize}
 
 \section{Modelo de Entidad Relación}
+\label{sec:modelo-de-entidad-relacion}
+
+Como dijimos en la sección \ref{sec:introduccion}, para representar el Modelo de Entidad Relación realizado utilizamos el Diagrama Entidad Relación (DER). Presentado en las subsiguientes figuras, el DER fue dividido en diferentes secciones lógicas para facilitar su navegación, pero conceptualmente se trata de un único diagrama. Las divisiones constan de una sección central que incluye las interrelaciones más relevantes entre las entidades de Usuario, Publicación y Compra; y luego, una sección por cada una de estas tres entidades mostrando en detalle su composición y entidades relacionadas.
+
 \begin{landscape}
-%\includegraphics[scale=.35]{../der.jpg}
+    \begin{figure}[h]
+        \frame{\includegraphics[scale=0.7]{der/central.pdf}}
+        \captionof{figure}{Diagrama Entidad Relación: Sección Central.}
+    \end{figure}
 \end{landscape}
- 
+
+\begin{landscape}
+    \begin{figure}[h]
+        \frame{\includegraphics[scale=0.7]{der/usuario.pdf}}
+        \captionof{figure}{Diagrama Entidad Relación: Sección Usuario.}
+    \end{figure}
+\end{landscape}
+
+\begin{landscape}
+    \begin{figure}[h]
+        \frame{\includegraphics[scale=0.7]{der/publicacion.pdf}}
+        \captionof{figure}{Diagrama Entidad Relación: Sección Publicación.}
+    \end{figure}
+\end{landscape}
+
+\begin{landscape}
+    \begin{figure}[h]
+        \frame{\includegraphics[scale=0.7]{der/compra.pdf}}
+        \captionof{figure}{Diagrama Entidad Relación: Sección Compra.}
+    \end{figure}
+\end{landscape}
+
 \section{Decisiones tomadas}
+\label{sec:decisiones-tomadas}
+
 \subsection{Decisiones de diseño}
 \begin{description}
  \item[Preguntas a una publicación] Consideramos que una pregunta realizada en una publicación puede tener una única respuesta, si el usuario desea replicar la respuesta debe hacerlo mediante una nueva pregunta.
 \end{description}
 
 \section{Modelo Relacional}
+\label{sec:modelo-relacional}
+
 \input{mr}
 
 \section{Restricciones}
+\label{sec:restricciones}
 
 La base de datos presenta varias restricciones de lenguaje natural. Las
 siguientes restricciones no se encuentran modeladas en la base, y es
@@ -66,6 +106,9 @@ responsabilidad de quien ingresa los datos asegurar que se cumplan.
 \end{itemize}
 
 \section{Implementación SQL}
+\label{sec:implementacion-sql}
+
 \input{impl-sql}
 
 \section{Conclusiones}
+\label{sec:conclusiones}

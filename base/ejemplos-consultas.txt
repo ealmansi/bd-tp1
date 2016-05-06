@@ -1,0 +1,5 @@
+python consulta_usuario.py --idUsuario 1 
+python consulta_categoria_producto.py --categoria "Computacion" 
+python consulta_usuario_preguntas.py --idUsuario 0
+python consulta_keyword.py --patron "%Silla%" --categoria "Hogar"
+python consulta_ganadores_anuales.py

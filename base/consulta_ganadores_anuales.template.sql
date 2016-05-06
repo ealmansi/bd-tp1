@@ -1,10 +1,5 @@
-.bail ON
-.headers ON
-.mode column
-
-PRAGMA foreign_keys = ON;
-
---
+-- Consulta por ganador/es anual de viaje a Khan El-Khalili: obtener, para un año
+-- especı́fico, el ganador/es
 
 SELECT IFNULL(razonSocial, nombre || apellido) ganador,
         AVG(valoracionVendedor) * SUM(precio) puntaje,

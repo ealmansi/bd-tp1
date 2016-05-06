@@ -1,2 +1,5 @@
 # Base de datos
 tp.db
+
+# Python temp files
+*.pyc

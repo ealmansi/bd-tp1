@@ -47,6 +47,18 @@ FK=\{tipoPublicacion, idUsuarioPublicador\}\\
 Publicacion.tipoPublicacion debe estar en TipoPublicacion.nombre\\
 TipoPublicacion.nombre puede no estar en Publicacion.tipoPublicacion
 
+ \item[PublicacionSubasta](\underline{\dashuline{idPublicacion}})\\
+PK=CK=\{idPublicacion\}\\
+FK=\{tipoPublicacion\}\\
+PublicacionSubasta.idPublicacion debe estar en Publicacion.idPublicacion\\
+Publicacion.idPublicacion puede no estar en PublicacionSubasta.idPublicacion
+
+ \item[PublicacionFinalizada](\underline{\dashuline{idPublicacion}})\\
+PK=CK=\{idPublicacion\}\\
+FK=\{tipoPublicacion\}\\
+PublicacionFinalizada.idPublicacion debe estar en Publicacion.idPublicacion\\
+Publicacion.idPublicacion puede no estar en PublicacionFinalizada.idPublicacion
+
  \item[TipoPublicacion](\underline{nombre}, comision, costo, nivel, caducidad)\\
 PK=CK=\{nombre\}\\
 FK=\{\}

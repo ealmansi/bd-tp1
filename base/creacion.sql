@@ -48,7 +48,7 @@ CREATE TABLE suscripcionRubiOriente (
 CREATE TABLE factura (
 	idFactura INTEGER NOT NULL PRIMARY KEY,
 	periodo DATE NOT NULL,
-	monto INTEGER NOT NULL,
+	monto INTEGER NOT NULL CHECK(monto > 0),
 	idUsuario INTEGER NOT NULL,
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)
 );
@@ -57,7 +57,7 @@ CREATE TABLE publicacion (
 	idPublicacion INTEGER NOT NULL PRIMARY KEY,
 	titulo TEXT NOT NULL,
 	fecha DATE NOT NULL,
-	precio INTEGER NOT NULL,
+	precio INTEGER NOT NULL CHECK(precio > 0),
 	nombreTipoPublicacion TEXT NOT NULL,
 	tipoVigencia INTEGER NOT NULL,
 	tipoVenta INTEGER NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE producto (
 
 CREATE TABLE servicio (
 	idItem INTEGER NOT NULL PRIMARY KEY,
-	precioPorHora INTEGER NOT NULL,
+	precioPorHora INTEGER NOT NULL CHECK(precioPorHora > 0),
 	nombreTipoServicio TEXT NOT NULL,
 	FOREIGN KEY(idItem) REFERENCES item(idItem),
 	FOREIGN KEY(nombreTipoServicio) REFERENCES tipoServicio(nombre)
@@ -135,7 +135,7 @@ CREATE TABLE compra (
 
 CREATE TABLE pago (
 	idPago INTEGER NOT NULL PRIMARY KEY,
-	monto INTEGER NOT NULL,
+	monto INTEGER NOT NULL CHECK(monto > 0),
 	tipo INTEGER not NULL
 );
 
@@ -148,8 +148,8 @@ CREATE TABLE pagoTarjeta (
 
 CREATE TABLE calificacion (
 	idCalificacion INTEGER NOT NULL PRIMARY KEY,
-	valoracionComprador INTEGER,
-	valoracionVendedor INTEGER,
+	valoracionComprador INTEGER CHECK(valoracionComprador BETWEEN 1 AND 10),
+	valoracionVendedor INTEGER CHECK(valoracionVendedor BETWEEN 1 AND 10),
 	comentarioComprador TEXT,
 	comentarioVendedor TEXT
 );
@@ -169,7 +169,7 @@ CREATE TABLE hizoOferta (
 	idUsuario INTEGER NOT NULL,
 	idPublicacion INTEGER NOT NULL,
 	fecha DATE NOT NULL,
-	monto INTEGER NOT NULL,
+	monto INTEGER NOT NULL CHECK(monto > 0),
 	PRIMARY KEY(idUsuario, idPublicacion, fecha),
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
 	FOREIGN KEY(idPublicacion) REFERENCES publicacionSubasta(idPublicacion)
@@ -201,3 +201,12 @@ CREATE TABLE visito (
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
 	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
 );
+
+-- Trigger para validar ingreso de oferta
+CREATE TRIGGER ofertaValida BEFORE INSERT ON hizoOferta 
+ WHEN (NEW.monto < (SELECT monto FROM hizoOferta ORDER BY fecha DESC LIMIT 1) 
+  OR NEW.monto > (SELECT monto FROM hizoOferta ORDER BY fecha DESC LIMIT 1) * 2)
+BEGIN
+ SELECT RAISE(ABORT, 'El monto de la oferta debe superar el monto actual y ser inferior al doble del mismo');
+END;
+

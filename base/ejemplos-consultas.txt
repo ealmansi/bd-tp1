@@ -1,6 +1,6 @@
 python consulta_usuario.py --idUsuario 1 
 python consulta_categoria_producto.py --categoria "Computacion" 
-python funcion_ofertar.py --idUsuario 1 --idPublicacion 1 --monto 150
+python funcion_ofertar.py --idUsuario 1 --idPublicacion 1 --monto 30
 python consulta_usuario_preguntas.py --idUsuario 0
 python consulta_keyword.py --patron "%Silla%" --categoria "Hogar"
 python consulta_ganadores_anuales.py

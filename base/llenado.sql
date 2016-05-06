@@ -108,8 +108,8 @@ INSERT INTO compra VALUES(3, 2, 0, 3, 3, 3);
 
 INSERT INTO publicacionSubasta VALUES(2);
 
-INSERT INTO hizoOferta VALUES(1, 2, '2016-03-12', 20);
-INSERT INTO hizoOferta VALUES(2, 2, '2016-03-11', 18);
+INSERT INTO hizoOferta VALUES(1, 2, '2016-03-11', 18);
+INSERT INTO hizoOferta VALUES(2, 2, '2016-03-12', 20);
 
 INSERT INTO visito VALUES(1, 2, '2016-03-12');
 INSERT INTO visito VALUES(2, 2, '2016-03-11');

@@ -22,7 +22,7 @@ Empresa.idUsuario debe estar en Usuario.idUsuario\\
 Empresa.nombreCategoriaEmp debe estar en CategoriaEmpresa.nombre
 
  \item[CategoriaEmpresa](\underline{nombre}, \dashuline{nombreSubCategoria})\\
-PK=CK=\{(nombre)\}\\
+PK=CK=\{nombre\}\\
 FK=\{nombreSubCategoria\}\\
 CategoriaEmpresa.nombreSubCategoria puede ser nulo o debe estar en CategoriaEmpresa.nombre\\
 CategoriaEmpresa.nombre puede no estar en CategoriaEmpresa.nombreSubCategoria
@@ -34,7 +34,8 @@ SuscripcionRubiOriente.idUsuario debe estar en Usuario.idUsuario\\
 Usuario.idUsuario puede no estar en SuscripcionRubiOriente.idUsuario
 
  \item[Factura](\underline{idFactura}, periodo, monto, \dashuline{idUsuario})\\
-PK=CK=\{idFactura\}\\
+PK=\{idFactura\}\\
+CK=\{idFactura, (idUsuario, periodo)\}\\
 FK=\{idUsuario\}\\
 Factura.idUsuario debe estar en Usuario.idUsuario\\
 Usuario.idUsuario puede no estar en Factura.idUsuario
@@ -51,7 +52,7 @@ PK=CK=\{nombre\}\\
 FK=\{\}
 
  \item[Item](\underline{idItem}, \dashuline{idPublicacion}, nombre, tipo)\\
-PK=CK=\{idItem, \dashuline{idPublicacion}\}\\
+PK=CK=\{idItem\}\\
 FK=\{idPublicacion\}
 
  \item[Producto](\underline{\dashuline{idItem}}, \dashuline{nombreCategoriaProd})\\
@@ -106,16 +107,14 @@ PagoTarjeta.idPago debe estar en Pago.idPago
 % FK=\{idPago\}\\
 % PagoEfectivo.idPago debe estar en Pago.idPago
 
- \item[Calificacion](\underline{idCalificacion}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor, \dashuline{idCompra})\\
+ \item[Calificacion](\underline{idCalificacion}, valoracionComprador, valoracionVendedor, comentarioComprador, comentarioVendedor)\\
 PK=CK=\{idCalificacion\}\\
-FK=\{idCompra\}\\
+FK=\{\}
 %Los atributos valoracionComprador, valoracionVendedor, comentarioComprador y comentarioVendedor pueden ser null\\
-Calificacion.idCompra debe estar en Compra.idCompra
 
- \item[Retiro](\underline{idRetiro}, tipo, \dashuline{idCompra})\\
+ \item[Retiro](\underline{idRetiro}, tipo)\\
 PK=CK=\{idRetiro\}\\
-FK=\{idCompra\}\\
-Retiro.idCompra debe estar en Compra.idCompra
+FK=\{\}
 
  \item[EnvioPostal](\underline{\dashuline{idRetiro}}, direccion)\\
 PK=CK=\{idRetiro\}\\

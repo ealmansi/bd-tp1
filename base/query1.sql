@@ -5,6 +5,7 @@
 PRAGMA foreign_keys = ON;
 
 -- Para cierto usuario, ver informacion sobre articulos que compro y vendio.
+
 SELECT publicacion.titulo
 FROM publicacion
 INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion

@@ -6,23 +6,23 @@ PRAGMA foreign_keys = ON;
 
 -- Busqueda por keyword
 
-select p.idPublicacion
-from publicacion p
-where p.tipoVigencia = 0
-and titulo like "%Silla%"
-and (
+SELECT p.idPublicacion
+FROM publicacion p
+WHERE p.tipoVigencia = 0
+AND titulo LIKE "%Silla%"
+AND (
 	exists (
-		select * 
-		from item i
-		inner join producto pr on i.idItem = pr.idItem
-		where pr.nombreCategoria = "Hogar"
-		and i.idPublicacion = p.idPublicacion
-	) or exists
+		SELECT * 
+		FROM item i
+		INNER JOIN producto pr ON i.idItem = pr.idItem
+		WHERE i.idPublicacion = p.idPublicacion
+		AND pr.nombreCategoriaProducto = "Hogar"
+	) OR exists
 	(
-		select * 
-		from item i
-		inner join servicio s on i.idPublicacion = p.idPublicacion
-		where i.idItem = s.idItem
-		and s.nombreServicio = "Hogar"
+		SELECT * 
+		FROM item i
+		INNER JOIN servicio s ON i.idItem = s.idItem
+		WHERE i.idPublicacion = p.idPublicacion
+		AND s.nombreTipoServicio = "Hogar"
 	)
 );

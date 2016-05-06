@@ -117,3 +117,117 @@ El problema presenta diferentes restricciones que no se encuentran modeladas en 
 
 \section{Conclusiones}
 \label{sec:conclusiones}
+
+\newpage
+\appendix
+\section{Creación de tablas} \label{App:AppendixA}
+% the \\ insures the section title is centered below the phrase: AppendixA
+
+\verbatiminput{../base/creacion.sql}
+
+\newpage
+\section{Funcionalidades adicionales} \label{App:AppendixB}
+
+
+$\bullet$ Consulta por usuario: obtener, para un usuario específico, información sobre los artículos que ha
+comprado y vendido, los artículos que ha visitado con su fecha de visita, los artículos que tiene
+en su lista de favoritos, y las primeras 3 categorías de artículos que visitó con mayor frecuencia
+en el último año.
+
+\begin{verbatim}
+SELECT publicacion.*
+FROM publicacion
+INNER JOIN publicacionFinalizada
+    ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+INNER JOIN compra
+    ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+WHERE compra.idUsuario = :idUsuario
+UNION 
+SELECT publicacion.*
+FROM publicacion
+INNER JOIN publicacionFinalizada
+    ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+WHERE publicacion.idUsuario = :idUsuario;
+\end{verbatim}
+
+$\bullet$ Consulta por categoría de producto: obtener, dada una categoría de producto (``Computación'',
+``Hogar, muebles y jardín'', etc), un listado de los vendedores que han publicado artículos de dicha
+categoría y la cantidad de ventas que efectuó cada uno de dichos vendedores.
+
+\begin{verbatim}
+SELECT u.idUsuario, count(*)
+FROM usuario u
+INNER JOIN publicacion pu1 ON u.idUsuario = pu1.idUsuario
+INNER JOIN compra co1 ON co1.idPublicacionFinalizada = pu1.idPublicacion
+WHERE u.idUsuario IN (
+    SELECT DISTINCT pu2.idUsuario
+    FROM producto pr
+    INNER JOIN item i ON pr.idItem == i.idItem
+    INNER JOIN publicacion pu2 ON i.idPublicacion = pu2.idPublicacion
+    INNER JOIN compra co2 ON co2.idPublicacionFinalizada = pu2.idPublicacion
+    WHERE nombreCategoriaProducto = :categoria
+)
+GROUP BY u.idUsuario;
+\end{verbatim}
+
+$\bullet$ Función ``Ofertar'': debe permitir al usuario ofertar una suma en una subasta. Dicha suma debe
+ser superior en al menos 1 peso, a la oferta actual, e inferior al doble de la oferta actual.
+
+\begin{verbatim}
+INSERT INTO hizoOferta VALUES (:idUsuario, :idPublicacion, datetime('now'), :monto)    
+\end{verbatim}
+
+$\bullet$ Consulta por usuario y preguntas: obtener para un usuario específico, la lista de preguntas que
+ha realizado, con las respectivas respuestas que haya recibido (sólo la pregunta, si aún no recibió
+respuesta).
+
+\begin{verbatim}
+SELECT p.pregunta, p.respuesta 
+FROM pregunta p
+WHERE p.idUsuario = :idUsuario;
+\end{verbatim}
+
+$\bullet$ Consulta por keyword: obtener, para un cierto keyword (por ejemplo ``mesa''), la lista de publicaciones
+vigentes que tengan en el título, dicha keyword. El usuario debe poder restringir su
+búsqueda sólo a cierta categoría de artículos o servicios.
+ 
+\begin{verbatim}
+SELECT p.idPublicacion
+FROM publicacion p
+WHERE p.tipoVigencia = 0
+AND titulo LIKE :patron
+AND (
+    EXISTS (
+        SELECT * 
+        FROM item i
+        INNER JOIN producto pr ON i.idItem = pr.idItem
+        WHERE i.idPublicacion = p.idPublicacion
+        AND pr.nombreCategoriaProducto = :categoria
+    ) OR EXISTS
+    (
+        SELECT * 
+        FROM item i
+        INNER JOIN servicio s ON i.idItem = s.idItem
+        WHERE i.idPublicacion = p.idPublicacion
+        AND s.nombreTipoServicio = :categoria
+    )
+);
+\end{verbatim}
+
+$\bullet$ Consulta por ganador/es anual de viaje a Khan El-Khalili: obtener, para un año específico, el ganador/es
+
+\begin{verbatim}
+SELECT IFNULL(razonSocial, nombre || apellido) ganador,
+        AVG(valoracionVendedor) * SUM(precio) puntaje,
+        AVG(valoracionVendedor) calificacion_promedio,
+        SUM(precio) suma_montos_abonados
+FROM calificacion
+INNER JOIN compra ON compra.idCalificacion = calificacion.idCalificacion
+INNER JOIN publicacion ON publicacion.idPublicacion = compra.idPublicacionFinalizada
+INNER JOIN usuario ON usuario.idUsuario = publicacion.idUsuario
+LEFT JOIN particular ON particular.idUsuario = usuario.idUsuario
+LEFT JOIN empresa ON empresa.idUsuario = usuario.idUsuario
+GROUP BY usuario.idUsuario
+ORDER BY AVG(valoracionVendedor) * SUM(precio) DESC
+LIMIT 1;
+\end{verbatim}

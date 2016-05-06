@@ -1,5 +1,4 @@
 .bail ON
-.echo ON
 .headers ON
 .mode column
 
@@ -14,16 +13,16 @@ and titulo like "%Silla%"
 and (
 	exists (
 		select * 
-		from item i, producto pr
-		where i.idItem = pr.idItem
-		and pr.nombreCategoria = "Hogar"
+		from item i
+		inner join producto pr on i.idItem = pr.idItem
+		where pr.nombreCategoria = "Hogar"
 		and i.idPublicacion = p.idPublicacion
 	) or exists
 	(
 		select * 
-		from item i, servicio s
+		from item i
+		inner join servicio s on i.idPublicacion = p.idPublicacion
 		where i.idItem = s.idItem
 		and s.nombreServicio = "Hogar"
-		and i.idPublicacion = p.idPublicacion
 	)
 );

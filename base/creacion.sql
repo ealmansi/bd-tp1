@@ -19,15 +19,14 @@ CREATE TABLE empresa (
 	idUsuario INTEGER NOT NULL PRIMARY KEY,
 	CUIT TEXT NOT NULL,
 	razonSocial TEXT NOT NULL,
-	idCategoriaEmpresa TEXT NOT NULL,
-	FOREIGN KEY(idUsuario) REFERENCES domicilio(idUsuario),
-	FOREIGN KEY(idCategoriaEmpresa) REFERENCES categoriaEmpresa(idCategoriaEmpresa)
+	nombreCategoriaEmpresa TEXT NOT NULL,
+	FOREIGN KEY(nombreCategoriaEmpresa) REFERENCES categoriaEmpresa(nombre)
 );
 
 CREATE TABLE categoriaEmpresa (
 	nombre TEXT NOT NULL PRIMARY KEY,
-	idCategoriaPadre TEXT,
-	FOREIGN KEY(idCategoriaPadre) REFERENCES categoriaEmpresa(idCategoriaEmpresa)
+	nombreCategoriaPadre TEXT,
+	FOREIGN KEY(nombreCategoriaPadre) REFERENCES categoriaEmpresa(nombre)
 );
 
 CREATE TABLE particular (
@@ -84,8 +83,8 @@ CREATE TABLE compra (
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
 	FOREIGN KEY(idPago) REFERENCES pago(idPago),
 	FOREIGN KEY(idCalificacion) REFERENCES calificacion(idCalificacion),
-	FOREIGN KEY(idPublicacionFinalizada) REFERENCES publicacionFinalizada(idPublicacion),
-	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro)
+	FOREIGN KEY(idRetiro) REFERENCES retiro(idRetiro),
+	FOREIGN KEY(idPublicacionFinalizada) REFERENCES publicacionFinalizada(idPublicacion)
 );
 
 CREATE TABLE retiro (
@@ -131,7 +130,7 @@ CREATE TABLE servicio (
 CREATE TABLE tipoServicio (
 	nombre TEXT NOT NULL PRIMARY KEY,
 	nombreTipoPadre TEXT,
-	FOREIGN KEY(nombreTipoPadre) REFERENCES tipoServicio(nombreTipo)
+	FOREIGN KEY(nombreTipoPadre) REFERENCES tipoServicio(nombre)
 );
 
 CREATE TABLE publicacion (
@@ -164,9 +163,9 @@ CREATE TABLE favoritoUsuarioPublicacion (
 );
 
 CREATE TABLE visitaUsuarioPublicacion (
-	fecha DATE NOT NULL,
 	idUsuario INTEGER NOT NULL,
 	idPublicacion INTEGER NOT NULL,
+	fecha DATE NOT NULL,
 	PRIMARY KEY(idUsuario, idPublicacion, fecha),
 	FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario),
 	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
@@ -184,6 +183,11 @@ CREATE TABLE pregunta (
 );
 
 CREATE TABLE publicacionSubasta (
+	idPublicacion INTEGER NOT NULL PRIMARY KEY,
+	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
+);
+
+CREATE TABLE subasta(
 	idPublicacion INTEGER NOT NULL PRIMARY KEY,
 	FOREIGN KEY(idPublicacion) REFERENCES publicacion(idPublicacion)
 );

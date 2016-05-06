@@ -1,5 +1,4 @@
 .bail ON
-.echo ON
 .headers ON
 .mode column
 
@@ -9,16 +8,15 @@ PRAGMA foreign_keys = ON;
 -- con la cantidad de ventas que efectuo (todos los productos)
 
 select u.idUsuario, count(*)
-from usuario u, publicacion pu1, compra co1
-where u.idUsuario = pu1.idUsuario 
-and co1.idPublicacionFinalizada = pu1.idPublicacion
-and u.idUsuario in (
+from usuario u
+inner join publicacion pu1 on u.idUsuario = pu1.idUsuario
+inner join compra co1 on co1.idPublicacionFinalizada = pu1.idPublicacion
+where u.idUsuario in (
 	select distinct pu2.idUsuario
-	from producto pr, item i, publicacion pu2, compra co2
+	from producto pr
+	inner join item i on pr.idItem == i.idItem
+	inner join publicacion pu2 on i.idPublicacion = pu2.idPublicacion
+	inner join compra co2 on co2.idPublicacionFinalizada = pu2.idPublicacion
 	where nombreCategoria = "Computacion"
-	and pr.idItem = i.idItem
-	and i.idPublicacion = pu2.idPublicacion
-	and co2.idPublicacionFinalizada = pu2.idPublicacion
 )
 group by u.idUsuario;
---*/

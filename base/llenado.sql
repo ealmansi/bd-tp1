@@ -1,3 +1,8 @@
+.bail ON
+.echo ON
+
+PRAGMA foreign_keys = ON;
+
 BEGIN TRANSACTION;
 
 INSERT INTO usuario VALUES(0, "Arenales", 1111, "Quilmes", "44445454", "juan@gmail.com", 1);
@@ -7,8 +12,8 @@ INSERT INTO usuario VALUES(2, "Compumundo", 2000, "San Isidro", "44446666", "com
 INSERT INTO particular VALUES(0, "Juan", "Perez", 35353535);
 INSERT INTO particular VALUES(1, "Miguel", "Maurizio", 36363636);
 
-INSERT INTO categoriaEmpresa VALUES("comidas", null);
-INSERT INTO categoriaEmpresa VALUES("electronica", null);
+INSERT INTO categoriaEmpresa VALUES("comidas", NULL);
+INSERT INTO categoriaEmpresa VALUES("electronica", NULL);
 INSERT INTO categoriaEmpresa VALUES("computacion", "electronica");
 
 INSERT INTO empresa VALUES(0, "20454545459", "Compumundo SA", "computacion");
@@ -32,6 +37,11 @@ INSERT INTO publicacion VALUES(1, "Computadora", '2016-03-20', 15000, 0, 1, "Rub
 INSERT INTO publicacion VALUES(2, "Super Maceta", '2016-03-10', 10, 1, 1, "Bronce", 0);
 INSERT INTO publicacion VALUES(3, "Mega Computadora", '2016-03-21', 18000, 0, 1, "RubiDeOriente", 2);
 INSERT INTO publicacion VALUES(4, "Silla", '2016-01-01', 15, 0, 0, "Libre!", 1);
+
+INSERT INTO publicacionFinalizada VALUES (0);
+INSERT INTO publicacionFinalizada VALUES (1);
+INSERT INTO publicacionFinalizada VALUES (2);
+INSERT INTO publicacionFinalizada VALUES (3);
 
 INSERT INTO categoriaProducto VALUES("Hogar", null);
 INSERT INTO categoriaProducto VALUES("Jardin", "Hogar");
@@ -70,8 +80,8 @@ INSERT INTO pago VALUES(1, 15000, 1);
 INSERT INTO pago VALUES(2, 18000, 0);
 INSERT INTO pago VALUES(3, 5000, 1);
 
-INSERT INTO pagoTarjeta VALUES(1, 2344567812345678, 12);
-INSERT INTO pagoTarjeta VALUES(3, 1234567827834456, 6);
+INSERT INTO pagoTarjeta VALUES(1, 2344567812345678, 2);
+INSERT INTO pagoTarjeta VALUES(3, 1234567827834456, 3);
 
 INSERT INTO calificacion VALUES(0, "No me gusto el producto", null, 2, null);
 INSERT INTO calificacion VALUES(1, "Todo bien", "Pone 10!", 9, 5);
@@ -93,6 +103,8 @@ INSERT INTO compra VALUES(3, 2, 3, 3, 3, 0);
 
 --
 
+INSERT INTO subasta VALUES(2);
+
 INSERT INTO ofertaUsuarioSubasta VALUES(1, 2, '2016-03-12', 20);
 INSERT INTO ofertaUsuarioSubasta VALUES(2, 2, '2016-03-11', 18);
 
@@ -108,5 +120,5 @@ INSERT INTO favoritoUsuarioPublicacion VALUES(2, 0);
 INSERT INTO pregunta VALUES(0, "La impresora tiene scanner?", null, 0, 1);
 INSERT INTO pregunta VALUES(1, "Instalacion incluida?", "Si", 1, 3);
 
-
 COMMIT;
+

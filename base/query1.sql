@@ -1,5 +1,4 @@
 .bail ON
-.echo ON
 .headers ON
 .mode column
 

@@ -4,7 +4,8 @@ all: clean create
 
 create:
 	sqlite3 $(table) < creacion.sql
-
+fill:
+	sqlite3 $(table) < llenado.sql
 run: create
 	sqlite3 $(table) < queries.sql
 

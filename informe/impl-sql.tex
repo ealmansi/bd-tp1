@@ -4,6 +4,23 @@
 \begin{verbatim}
 \end{verbatim}
 
+\subsection{Aclaraciones}
+
+A la hora de implementar la herencia disjunta en las entidades debimos colocar un identificador para saber de que tipo es. \\
+Dicho identificador es un INTEGER, a continuación explicamos que implica cada número.\\
+\begin{description}
+
+\item[Publicacion] En tipoVigencia, un 0 implica vigente y un 1 finalizada. Para el tipo de publicación, 0 implica onrmal, 1 subasta.
+
+\item[Item] En la entidad Item, 0 implica que es un prooducto y 1 que es un servicio.
+
+\item[Pago] Aquí un 0 implica pago al contado y 1 pago con tarjeta.
+
+\item[Usuario] Un 0 en esta entidad significa particular y un 1 que es una empresa.
+
+\item[Retiro] En cuanto a Retiros, un 0 implica retiro personal, en cambio, un 1 implica envío postal.
+
+\end{description}
 
 \subsection{Funcionalidades implementadas}
 Las funcionalidades implementadas (SQL/stored procedures/triggers) son:

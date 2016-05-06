@@ -24,3 +24,12 @@ def runQuery(queryTemplateFilepath, arguments):
                 for value in row:
                     print value or "NULL", "|",
                 print
+
+def runStatement(statementTemplateFilepath, arguments):
+    with open(statementTemplateFilepath) as statementTemplateFile:
+        statementTemplate = statementTemplateFile.read()
+        with sqlite3.connect("tp.db") as connection:
+            cursor = connection.cursor()
+            cursor.execute(statementTemplate, arguments)
+            connection.commit()
+            print "Success."

@@ -12,4 +12,5 @@ UNION
 SELECT publicacion.*
 FROM publicacion
 INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+INNER JOIN compra ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
 WHERE publicacion.idUsuario = :idUsuario;

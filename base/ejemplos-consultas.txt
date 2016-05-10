@@ -1,4 +1,4 @@
-python consulta_usuario.py --idUsuario 1 
+python consulta_usuario.py --idUsuario 1
 python consulta_categoria_producto.py --categoria "Computacion" 
 python funcion_ofertar.py --idUsuario 1 --idPublicacion 1 --monto 30
 python consulta_usuario_preguntas.py --idUsuario 1

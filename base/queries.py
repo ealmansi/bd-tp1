@@ -25,7 +25,7 @@ def runQuery(queryTemplateFilepath, arguments):
                 print
                 for row in cursor.fetchall():
                     for value in row:
-                        print value or "NULL", "|",
+                        print value if value is not None else "NULL", "|",
                     print
 
 def runStatement(statementTemplateFilepath, arguments):

@@ -3,14 +3,16 @@
 -- visita, los artı́culos que tiene en su lista de favoritos, y las primeras 3 categorı́as
 -- de artı́culos que visitó con mayor frecuencia en el último año.
 
-SELECT publicacion.*
+SELECT item.*, "compra" AS accion
 FROM publicacion
 INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
 INNER JOIN compra ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+INNER JOIN item ON item.idPublicacion = compra.idPublicacionFinalizada
 WHERE compra.idUsuario = :idUsuario
 UNION 
-SELECT publicacion.*
+SELECT item.*, "venta" AS accion
 FROM publicacion
 INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
 INNER JOIN compra ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+INNER JOIN item ON item.idPublicacion = compra.idPublicacionFinalizada
 WHERE publicacion.idUsuario = :idUsuario;

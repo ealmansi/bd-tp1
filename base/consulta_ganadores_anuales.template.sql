@@ -1,16 +1,13 @@
 -- Consulta por ganador/es anual de viaje a Khan El-Khalili: obtener, para un año
 -- especı́fico, el ganador/es
 
-SELECT IFNULL(razonSocial, nombre || apellido) ganador,
-        AVG(valoracionVendedor) * SUM(precio) puntaje,
-        AVG(valoracionVendedor) calificacion_promedio,
-        SUM(precio) suma_montos_abonados
-FROM calificacion
-INNER JOIN compra ON compra.idCalificacion = calificacion.idCalificacion
-INNER JOIN publicacion ON publicacion.idPublicacion = compra.idPublicacionFinalizada
-INNER JOIN usuario ON usuario.idUsuario = publicacion.idUsuario
-LEFT JOIN particular ON particular.idUsuario = usuario.idUsuario
-LEFT JOIN empresa ON empresa.idUsuario = usuario.idUsuario
+SELECT usuario.*, SUM(publicacion.precio) * AVG(calificacion.valoracionComprador) AS puntaje
+FROM usuario
+INNER JOIN publicacion ON usuario.idUsuario = publicacion.idUsuario
+INNER JOIN publicacionFinalizada ON publicacion.idPublicacion = publicacionFinalizada.idPublicacion
+INNER JOIN compra ON publicacionFinalizada.idPublicacion = compra.idPublicacionFinalizada
+INNER JOIN calificacion ON compra.idCalificacion = calificacion.idCalificacion
+WHERE strftime('%Y', publicacion.fecha) = :año AND calificacion.valoracionComprador IS NOT NULL
 GROUP BY usuario.idUsuario
-ORDER BY AVG(valoracionVendedor) * SUM(precio) DESC
+ORDER BY puntaje DESC
 LIMIT 1;

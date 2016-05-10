@@ -5,5 +5,5 @@ from queries import *
 
 if __name__ == '__main__':
     queryTemplate = "consulta_ganadores_anuales.template.sql" 
-    arguments = getArguments([])
+    arguments = getArguments(['año'])
     runQuery(queryTemplate, arguments)

@@ -139,18 +139,18 @@ en su lista de favoritos, y las primeras 3 categorías de artículos que visitó co
 en el último año.
 
 \begin{verbatim}
-SELECT publicacion.*
+SELECT item.*, "compra" AS accion
 FROM publicacion
-INNER JOIN publicacionFinalizada
-    ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
-INNER JOIN compra
-    ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+INNER JOIN compra ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+INNER JOIN item ON item.idPublicacion = compra.idPublicacionFinalizada
 WHERE compra.idUsuario = :idUsuario
 UNION 
-SELECT publicacion.*
+SELECT item.*, "venta" AS accion
 FROM publicacion
-INNER JOIN publicacionFinalizada
-    ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+INNER JOIN publicacionFinalizada ON publicacionFinalizada.idPublicacion = publicacion.idPublicacion
+INNER JOIN compra ON compra.idPublicacionFinalizada = publicacionFinalizada.idPublicacion
+INNER JOIN item ON item.idPublicacion = compra.idPublicacionFinalizada
 WHERE publicacion.idUsuario = :idUsuario;
 \end{verbatim}
 
@@ -159,7 +159,7 @@ $\bullet$ Consulta por categoría de producto: obtener, dada una categoría de pro
 categoría y la cantidad de ventas que efectuó cada uno de dichos vendedores.
 
 \begin{verbatim}
-SELECT u.idUsuario, count(*)
+SELECT u.idUsuario, count(*) AS cantidad_ventas
 FROM usuario u
 INNER JOIN publicacion pu1 ON u.idUsuario = pu1.idUsuario
 INNER JOIN compra co1 ON co1.idPublicacionFinalizada = pu1.idPublicacion
@@ -221,17 +221,13 @@ AND (
 $\bullet$ Consulta por ganador/es anual de viaje a Khan El-Khalili: obtener, para un año específico, el ganador/es
 
 \begin{verbatim}
-SELECT IFNULL(razonSocial, nombre || apellido) ganador,
-        AVG(valoracionVendedor) * SUM(precio) puntaje,
-        AVG(valoracionVendedor) calificacion_promedio,
-        SUM(precio) suma_montos_abonados
-FROM calificacion
-INNER JOIN compra ON compra.idCalificacion = calificacion.idCalificacion
-INNER JOIN publicacion ON publicacion.idPublicacion = compra.idPublicacionFinalizada
-INNER JOIN usuario ON usuario.idUsuario = publicacion.idUsuario
-LEFT JOIN particular ON particular.idUsuario = usuario.idUsuario
-LEFT JOIN empresa ON empresa.idUsuario = usuario.idUsuario
-GROUP BY usuario.idUsuario
-ORDER BY AVG(valoracionVendedor) * SUM(precio) DESC
-LIMIT 1;
+SELECT usuario.*, SUM(publicacion.precio) AS suma_precio_ventas,
+        AVG(calificacion.valoracionComprador) AS valoracion_promedio
+FROM usuario
+INNER JOIN publicacion ON usuario.idUsuario = publicacion.idUsuario
+INNER JOIN publicacionFinalizada ON publicacion.idPublicacion = publicacionFinalizada.idPublicacion
+INNER JOIN compra ON publicacionFinalizada.idPublicacion = compra.idPublicacionFinalizada
+INNER JOIN calificacion ON compra.idCalificacion = calificacion.idCalificacion
+WHERE strftime('%Y', publicacion.fecha) = :año AND calificacion.valoracionComprador IS NOT NULL
+GROUP BY usuario.idUsuario;
 \end{verbatim}
